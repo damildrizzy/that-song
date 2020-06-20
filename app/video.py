@@ -21,6 +21,7 @@ def process_video(url, duration, tweet_id):
         video = VideoFileClip(url).subclip(0,20)
         #convert to mp3
         audio = video.audio
+        #saves audio to local directory
         audio.write_audiofile(f"{tweet_id}.mp3")
         #upload to cloudinary
         upload_mp3 = uploader.upload(f"{tweet_id}.mp3", resource_type="video", public_id=f"{tweet_id}")
