@@ -1,0 +1,4 @@
+cloudinary==1.21.1
+moviepy==1.0.3
+tweepy==3.8.0
+redis==3.5.3
