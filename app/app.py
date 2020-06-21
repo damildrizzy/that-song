@@ -1,3 +1,4 @@
+import os
 import logging
 import tweepy
 import time
@@ -8,9 +9,11 @@ from config import create_api, redis_db
 from video import process_video
 from utils import  success_responses, failure_responses
 
-
-logging.basicConfig(filename='app.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+if os.getenv('CURRENT_ENV') == 'development':
+    logging.basicConfig(filename='app.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
+else:
+    logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 def check_mentions(api, since_id):
