@@ -21,20 +21,13 @@ cloudinary.config(
   api_secret = os.getenv('CLOUDINARY_API_SECRET')  
 )
 
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0)
-
-
-# process = json.dumps({
-#     'name': 'sam',
-#     'age': 23
-# })
-
-# redis_db.set('1234', process)
-
-# dicto = redis_db.get("1234")
-
-# print(json.loads(dicto))
-
+if os.getenv("CURRENT_ENV") == "development":
+    redis_db = redis.StrictRedis(host="localhost", port=6379, db=0)
+else:
+    redis_url = os.getenv("REDIS_URL")
+    redis_db = redis.from_url(redis_url)
+    since_id = os.getenv("SINCE_ID")
+    redis_db.set("since_id", since_id)
 
 
 def create_api():

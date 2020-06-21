@@ -18,7 +18,7 @@ def check_mentions(api, since_id):
     new_since_id = since_id
     tweets = tweepy.Cursor(api.mentions_timeline, since_id=since_id).items()
     for tweet in tweets:
-        logger.info("found a tweet")
+        logger.info(f"found a tweet, {tweet.id}")
         new_since_id = max(tweet.id, new_since_id)
         #save the since_id to redis so we can resume from here if we restart the server
         redis_db.set('since_id', new_since_id)
@@ -77,8 +77,13 @@ def main():
     api = create_api()
     since_id =  int(redis_db.get('since_id')) 
     while True:
-        since_id = check_mentions(api, since_id)
-        time.sleep(60)
+        try:
+            since_id = check_mentions(api, since_id)
+            time.sleep(60)
+        except tweepy.TweepError as e:
+            print(e.reason)
+            time.sleep(60*15)
+            continue
     
 
 if __name__ == "__main__":
