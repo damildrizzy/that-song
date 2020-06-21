@@ -88,6 +88,3 @@ def main():
             time.sleep(60*15)
             continue
     
-
-if __name__ == "__main__":
-    main()
