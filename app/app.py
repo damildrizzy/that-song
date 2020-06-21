@@ -83,7 +83,7 @@ def main():
     while True:
         try:
             since_id = check_mentions(api, since_id)
-            time.sleep(120)
+            time.sleep(60)
         except tweepy.TweepError as e:
             logger.info(e.reason)
             time.sleep(60*15)
