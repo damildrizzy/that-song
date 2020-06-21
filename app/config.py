@@ -13,6 +13,8 @@ logger = logging.getLogger()
 
 audd_api_token = os.getenv('AUDD_API_TOKEN')
 
+since_id = os.getenv('SINCE_ID')
+
 cloudinary.config(
   cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
   api_key = os.getenv('CLOUDINARY_API_KEY'),  
