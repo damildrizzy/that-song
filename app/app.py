@@ -65,7 +65,7 @@ def check_mentions(api, since_id):
                 in_reply_to_status_id=tweet.id
             )
         else:
-            logger.ino("didn't find a song")
+            logger.info("didn't find a song")
             prefix = random.choice(failure_responses)
             api.update_status(
                 status=f"@{tweet.user.screen_name} {prefix}",
@@ -82,7 +82,7 @@ def main():
     while True:
         try:
             since_id = check_mentions(api, since_id)
-            time.sleep(300)
+            time.sleep(120)
         except tweepy.TweepError as e:
             logger.info(e.reason)
             time.sleep(60*15)
