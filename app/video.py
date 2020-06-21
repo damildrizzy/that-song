@@ -18,17 +18,18 @@ def process_video(url, duration, tweet_id):
         return json.loads(result.text)
     else:
         #Trim video to 20 seconds
-        video = VideoFileClip(url).subclip(0,20)
-        #convert to mp3
-        audio = video.audio
-        #saves audio to local directory
-        audio.write_audiofile(f"{tweet_id}.mp3")
+        # video = VideoFileClip(url).subclip(0,20)
+        # #convert to mp3
+        # audio = video.audio
+        # #saves audio to local directory
+        # audio.write_audiofile(f"{tweet_id}.mp3")
         #upload to cloudinary
-        upload_mp3 = uploader.upload(f"{tweet_id}.mp3", resource_type="video", public_id=f"{tweet_id}")
-        url = upload_mp3['secure_url']
+        uploader.upload(url, resource_type="video", public_id=f"{tweet_id}")
+        url = f"http://res.cloudinary.com/parselfinger/video/upload/eo_19.50,so_0.00/{tweet_id}.mp4"
         data = {
             'url': url,
             'api_token': audd_api_token
         }
         result = requests.post('https://api.audd.io', data=data)
+        uploader.destroy(f"{tweet_id}", resource_type="video")
         return json.loads(result.text)

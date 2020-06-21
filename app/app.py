@@ -2,9 +2,12 @@ import logging
 import tweepy
 import time
 import pprint
+import json
+import random
 
 from config import create_api, redis_db
 from video import process_video
+from utils import  success_responses, failure_responses
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -28,7 +31,8 @@ def check_mentions(api, since_id):
         
         #check if that tweet already exists
         if redis_db.get(f"{replied_tweet_id}") is not None:
-            process = redis_db.hgetall(f"{replied_tweet_id}")
+            print("found that one before")
+            process = json.loads(redis_db.get(f"{replied_tweet_id}"))
         else:
             replied_tweet = api.get_status(replied_tweet_id)
             try:
@@ -39,24 +43,30 @@ def check_mentions(api, since_id):
             #convert milliseconds to seconds
             video_duration = video_duration * 0.001
             process = process_video(video_url, video_duration, replied_tweet_id)
-            print(type(process))
             print(process)
+            print(type(process))
             #save the result to redis 
-            #redis_db.hmset(f"{replied_tweet_id}", process)
+            tweet_data = json.dumps(process)
+            redis_db.set(f"{replied_tweet_id}", tweet_data)
         
         if process['result'] is not None:
 
             title = process['result']['title']
             artist = process['result']['artist']
+            song_link = process['result']['song_link']
+            
+
             
             #reply the tweet
+            prefix = random.choice(success_responses)
             api.update_status(
-                status=f"Yo! @{tweet.user.screen_name} The song name is {title} by {artist}",
+                status=f"@{tweet.user.screen_name} {prefix} The song is {title} by {artist}. You can get it here {song_link}",
                 in_reply_to_status_id=tweet.id
             )
         else:
+            prefix = random.choice(failure_responses)
             api.update_status(
-                status=f"sorry @{tweet.user.screen_name}, couldn't find that song",
+                status=f"@{tweet.user.screen_name} {prefix}",
                 in_reply_to_status_id=tweet.id
             )
 

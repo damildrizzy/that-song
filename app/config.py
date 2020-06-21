@@ -1,10 +1,11 @@
 import os
 import logging
+import json
 from dotenv import load_dotenv
 import tweepy
 import cloudinary
 import redis
-from cloudinary import uploader, utils
+from cloudinary import uploader, CloudinaryVideo
 
 
 load_dotenv()
@@ -19,6 +20,18 @@ cloudinary.config(
 )
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0)
+
+
+# process = json.dumps({
+#     'name': 'sam',
+#     'age': 23
+# })
+
+# redis_db.set('1234', process)
+
+# dicto = redis_db.get("1234")
+
+# print(json.loads(dicto))
 
 
 
