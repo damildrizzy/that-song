@@ -80,12 +80,13 @@ def main():
     api = create_api()
     since_id =  int(redis_db.get('since_id')) 
     while True:
-        since_id = check_mentions(api, since_id)
-        time.sleep(300)
-        # except tweepy.TweepError as e:
-        #     print(e.reason)
-        #     time.sleep(60*15)
-        #     continue
+        try:
+            since_id = check_mentions(api, since_id)
+            time.sleep(300)
+        except tweepy.TweepError as e:
+            logger.info(e.reason)
+            time.sleep(60*15)
+            continue
     
 if __name__ == "__main__":
     main()
