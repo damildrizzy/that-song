@@ -79,6 +79,7 @@ def check_mentions(api, since_id):
 def main():
     api = create_api()
     since_id =  int(redis_db.get('since_id')) 
+    print(since_id)
     while True:
         try:
             since_id = check_mentions(api, since_id)
