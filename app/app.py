@@ -44,13 +44,14 @@ def check_mentions(api, since_id):
             video_duration = video_duration * 0.001
             
             process = process_video(video_url, video_duration, replied_tweet_id)
+            print(process)
             
             #save the result to redis 
             tweet_data = json.dumps(process)
             redis_db.set(f"{replied_tweet_id}", tweet_data)
         
         # If the api succesfully recognises the api
-        if process['result'] is not None:
+        if (process['status'] == "success") and (process['result'] is not None):
             logger.info("song retrieved succesfully")
             title = process['result']['title']
             artist = process['result']['artist']
