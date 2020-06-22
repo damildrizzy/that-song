@@ -26,8 +26,8 @@ if os.getenv("CURRENT_ENV") == "development":
 else:
     redis_url = os.getenv("REDIS_URL")
     redis_db = redis.from_url(redis_url)
-    since_id = os.getenv("SINCE_ID")
-    redis_db.set("since_id", since_id)
+    # since_id = os.getenv("SINCE_ID")
+    # redis_db.set("since_id", since_id)
 
 
 def create_api():

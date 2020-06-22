@@ -61,7 +61,7 @@ def check_mentions(api, since_id):
             #reply the tweet
             prefix = random.choice(success_responses)
             api.update_status(
-                status=f"@{tweet.user.screen_name} {prefix} The song is {title} by {artist}. You can get it here {song_link}",
+                status=f"@{tweet.user.screen_name} {prefix} The song is {title} by {artist}. {song_link}",
                 in_reply_to_status_id=tweet.id
             )
         else:
